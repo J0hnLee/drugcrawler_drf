@@ -1,0 +1,51 @@
+version: '3'
+
+volumes:
+  drugcrawler_drf_local_postgres_data: {}
+  drugcrawler_drf_local_postgres_data_backups: {}
+
+services:
+  django:
+    build:
+      context: .
+      dockerfile: ./compose/local/django/Dockerfile
+    image: drugcrawler_drf_local_django
+    container_name: drugcrawler_drf_local_django
+    depends_on:
+      - postgres
+    volumes:
+      - .:/app:z
+    env_file:
+      - ./.envs/.local/.django
+      - ./.envs/.local/.postgres
+    ports:
+      - "8000:8000"
+    command: /start
+
+  postgres:
+    build:
+      context: .
+      dockerfile: ./compose/production/postgres/Dockerfile
+    image: drugcrawler_drf_production_postgres
+    container_name: drugcrawler_drf_local_postgres
+    volumes:
+      - drugcrawler_drf_local_postgres_data:/var/lib/postgresql/data
+      - drugcrawler_drf_local_postgres_data_backups:/backups
+    env_file:
+      - ./.envs/.local/.postgres
+
+  docs:
+    image: drugcrawler_drf_local_docs
+    container_name: drugcrawler_drf_local_docs
+    build:
+      context: .
+      dockerfile: ./compose/local/docs/Dockerfile
+    env_file:
+      - ./.envs/.local/.django
+    volumes:
+      - ./docs:/docs:z
+      - ./config:/app/config:z
+      - ./drugcrawler_drf:/app/drugcrawler_drf:z
+    ports:
+      - "9000:9000"
+    command: /start-docs

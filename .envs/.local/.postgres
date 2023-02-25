@@ -1,0 +1,7 @@
+# PostgreSQL
+# ------------------------------------------------------------------------------
+POSTGRES_HOST=postgres
+POSTGRES_PORT=5432
+POSTGRES_DB=drugcrawler_drf
+POSTGRES_USER=acoLbZXCAEHeTCFNbhyJwtbenkgTatUr
+POSTGRES_PASSWORD=vXu8YKqpB85dGlAXM4loUpXgh0Gfi1Gf1OHZLjHI0mkwSQpNtONFsDhBnQyangTO
